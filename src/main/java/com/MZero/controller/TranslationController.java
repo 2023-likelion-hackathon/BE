@@ -30,7 +30,7 @@ public class TranslationController {
         patternTranslations.put(Pattern.compile("\\b핵(\\w*?)"), "진짜 $1");
         patternTranslations.put(Pattern.compile("(\\w*?)까(\\w*?)"), "$1 안티팬$2");
         patternTranslations.put(Pattern.compile("\\b대깨(\\w*?)"), "무조건 $1");
-        patternTranslations.put(Pattern.compile("(\\w*?)각.*"), "$1할 수 있겠다!");
+        patternTranslations.put(Pattern.compile("(\\w*?)각[^!?]*"), "$1할 수 있겠다");
 
         // 원래 띄어쓰기가 있는 단어
         spacedWordsTranslations.put("라떼는 말이야", "나 때는 말이야");
