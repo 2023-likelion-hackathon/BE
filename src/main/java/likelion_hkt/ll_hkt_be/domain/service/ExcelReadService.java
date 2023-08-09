@@ -37,13 +37,13 @@ public class ExcelReadService {
             XSSFRow sub_sheet_row = sub_sheet.getRow(rowidx);
 
             if(coined_sheet_row != null && coined_sheet_row.getCell(0).toString().equals(inputWord)) {
-                String coinedWord = coined_sheet_row.getCell(0).toString();
-                String coinedWordMeaning = coined_sheet_row.getCell(1).toString();
+                String coinedWord = CheckNullPointException(coined_sheet_row.getCell(0));
+                String coinedWordMeaning = CheckNullPointException(coined_sheet_row.getCell(1));
 
                 String coinedWordUrl = CheckNullPointException(coined_sheet_row.getCell(2));
 
-                String subWord = sub_sheet_row.getCell(0).toString();
-                String subWordMeaning = sub_sheet_row.getCell(0).toString();
+                String subWord = CheckNullPointException(sub_sheet_row.getCell(0));
+                String subWordMeaning = CheckNullPointException(sub_sheet_row.getCell(1));
 
 
                 WordsDto wordsDto = WordsDto.builder()
@@ -54,9 +54,15 @@ public class ExcelReadService {
                         .subWordMeaning(subWordMeaning)
                         .build();
                 return wordsDto;
-            }else continue;
+            }
         }
-        return null;
+        return  WordsDto.builder()
+                .coinedWord("")
+                .coinedWordMeaning("")
+                .coinedWord_url("")
+                .subWord("")
+                .subWordMeaning("")
+                .build();
     }
 
 

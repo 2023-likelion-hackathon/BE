@@ -18,6 +18,8 @@ import java.net.URI;
 public class SearchResultController {
     private final ExcelReadService excelReadService;
     private final ParticleAnalyzeService particleAnalyzeService;
+    private WordsDto wordInfo=new WordsDto();
+
 
 
     @PostMapping("/translate")
@@ -28,11 +30,11 @@ public class SearchResultController {
 
         String[] wordsInSentence = initialAnalyzedSentence.split(" ");
         int wordNum = wordsInSentence.length;
-        WordsDto wordInfo=null;
 
 
         for(int i=0;i<wordNum;i++){
             String splitWord = wordsInSentence[i];
+            System.out.println(splitWord);
             wordInfo = excelReadService.readCoinedExcelData(splitWord);
             if(wordInfo!=null){
                 wordsInSentence[i] = wordInfo.getSubWord();
