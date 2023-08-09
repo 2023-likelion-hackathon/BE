@@ -1,57 +1,77 @@
 package likelion_hkt.ll_hkt_be.domain.service;
 
-import org.apache.poi.ss.usermodel.*;
+import likelion_hkt.ll_hkt_be.domain.controller.response.TranslationResponse;
+import likelion_hkt.ll_hkt_be.domain.service.dto.WordsDto;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class ExcelReadService {
 
     private String basic_path = "wordDataset/";
-    private String fileName = "coined_word.xlsx";
+    private String fileName = "wordDataset.xlsx";
 
-
-    public Map<String,String> readCoinedExcelData(String inputWord){
-         try (FileInputStream file = new FileInputStream(basic_path+fileName);
-             Workbook workbook = new XSSFWorkbook(file)) {
-
-            Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트 선택
-            int wordColumnIndex = findColumnIndex(sheet, "word"); // "word" 열(column)의 인덱스를 찾음
-
-            if (wordColumnIndex != -1) {
-                for (Row row : sheet) {
-                    Cell cell = row.getCell(wordColumnIndex);
-                    if (cell != null && cell.getCellType() == CellType.STRING) {
-                        String wordValue = cell.getStringCellValue();
-                        if (wordValue.equals(inputWord)) {
-                            System.out.println("Found: " + inputWord);
-                            // sword와 일치하는 값을 찾았을 때 원하는 작업을 수행하면 됨
-                        }
-                    }
-                }
-            } else {
-                System.out.println("Column 'word' not found in the sheet.");
-            }
-         }catch (Exception e) {
-             throw new RuntimeException(e);
-         }
-
-
-        return null;
+    private String getFilePath(){
+        return basic_path+fileName;
     }
-    private static int findColumnIndex(Sheet sheet, String columnName) {
-        Row firstRow = sheet.getRow(0); // 첫 번째 행(row) 가져오기
 
-        if (firstRow != null) {
-            for (Cell cell : firstRow) {
-                if (cell.getCellType() == CellType.STRING && columnName.equals(cell.getStringCellValue())) {
-                    return cell.getColumnIndex(); // 해당 열(column)의 인덱스 반환
-                }
+
+    public WordsDto readCoinedExcelData(String inputWord) throws IOException{
+        InputStream inputStream = new ClassPathResource(getFilePath()).getInputStream();
+        XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+        XSSFSheet coined_sheet = workbook.getSheetAt(0);// 엑셀파일에서 첫 번째 시트 선택
+        XSSFSheet sub_sheet = workbook.getSheetAt(1);// 엑셀파일에서 첫 번째 시트 선택
+        int rowNum = coined_sheet.getPhysicalNumberOfRows(); // data 개수
+
+        for(int rowidx=0; rowidx<rowNum; rowidx++) {
+            XSSFRow coined_sheet_row = coined_sheet.getRow(rowidx);
+            XSSFRow sub_sheet_row = sub_sheet.getRow(rowidx);
+
+            if(coined_sheet_row != null && coined_sheet_row.getCell(0).toString().equals(inputWord)) {
+                String coinedWord = coined_sheet_row.getCell(0).toString();
+                String coinedWordMeaning = coined_sheet_row.getCell(1).toString();
+
+                String coinedWordUrl = CheckNullPointException(coined_sheet_row.getCell(2));
+
+                String subWord = sub_sheet_row.getCell(0).toString();
+                String subWordMeaning = sub_sheet_row.getCell(0).toString();
+
+
+                WordsDto wordsDto = WordsDto.builder()
+                        .coinedWord(coinedWord)
+                        .coinedWordMeaning(coinedWordMeaning)
+                        .coinedWord_url(coinedWordUrl)
+                        .subWord(subWord)
+                        .subWordMeaning(subWordMeaning)
+                        .build();
+                return wordsDto;
             }
         }
-        return -1; // 해당 열(column)이 존재하지 않으면 -1 반환
+        return null;
+    }
+
+    public TranslationResponse getWordsResponse(WordsDto wordsDto){
+        return TranslationResponse.builder()
+                .coinedWord(wordsDto.getCoinedWord())
+                .coinedWordMeaning(wordsDto.getCoinedWordMeaning())
+                .coinedWordUrl(wordsDto.getCoinedWord_url())
+                .subWord(wordsDto.getSubWord())
+                .subWordMeaning(wordsDto.getSubWordMeaning())
+                .translatedWord("뀨뀨꺄꺄")
+                .build();
+    }
+
+    public String CheckNullPointException(XSSFCell cell){
+
+        return cell!=null ? cell.toString() : "";
     }
 }
