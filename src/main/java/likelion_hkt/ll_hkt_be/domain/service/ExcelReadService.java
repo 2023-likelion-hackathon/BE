@@ -54,21 +54,12 @@ public class ExcelReadService {
                         .subWordMeaning(subWordMeaning)
                         .build();
                 return wordsDto;
-            }
+            }else continue;
         }
         return null;
     }
 
-    public TranslationResponse getWordsResponse(WordsDto wordsDto){
-        return TranslationResponse.builder()
-                .coinedWord(wordsDto.getCoinedWord())
-                .coinedWordMeaning(wordsDto.getCoinedWordMeaning())
-                .coinedWordUrl(wordsDto.getCoinedWord_url())
-                .subWord(wordsDto.getSubWord())
-                .subWordMeaning(wordsDto.getSubWordMeaning())
-                .translatedWord("뀨뀨꺄꺄")
-                .build();
-    }
+
 
     public String CheckNullPointException(XSSFCell cell){
 

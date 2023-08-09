@@ -1,24 +1,22 @@
-package com.MZero.controller;
+package likelion_hkt.ll_hkt_be.domain.service;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Controller
-public class TranslationController {
-    private static final Pattern JOSA_PATTERN = Pattern.compile("웃프(다|네|)");
+@Service
+public class ParticleAnalyzeService {
+    private static final Pattern PARTICLE_PATTERN = Pattern.compile("웃프(다|네|)"); // 조사
     private static final Map<Pattern, String> patternTranslations = new HashMap<>();
     private static final Map<String, String> spacedWordsTranslations = new HashMap<>();
 
+
     static {
         // 조사 패턴
-        patternTranslations.put(JOSA_PATTERN, "웃긴데 사실 슬프$1");
+        patternTranslations.put(PARTICLE_PATTERN, "웃긴데 사실 슬프$1");
 
         // 접두사, 접미사 패턴
         patternTranslations.put(Pattern.compile("\\b킹(\\w*?)"), "완전 $1");
@@ -42,24 +40,7 @@ public class TranslationController {
         spacedWordsTranslations.put("누가 기침 소리를 내었어", "누가 그랬어");
     }
 
-    @PostMapping("/translate") // "translate"는 임시로 넣은 값임.
-    @ResponseBody
-    public String translate(@RequestBody String text) {
-        // 문자열을 1차로 필터링
-        String filteredText = filtering(text);
-
-        // 문자열을 공백 기준으로 나눔
-        String[] words = filteredText.split(" ");
-
-        // 엑셀에서 대체될 표준어를 찾아와서 신조어와 바꾸는 로직이 들어가야함(혜진 몫)
-
-
-        // 문장을 다시 합쳐서 반환(최종 결과)
-        return String.join(" ", words);
-    }
-
-    // 1차로 문장을 필터링하기 위한 메소드
-    public String filtering(String text) {
+    public String InitialSentenceAnalysis(String text) {
         // 띄어쓰기 있는 단어 변환
         for (Map.Entry<String, String> entry : spacedWordsTranslations.entrySet()) {
             text = text.replace(entry.getKey(), entry.getValue());
