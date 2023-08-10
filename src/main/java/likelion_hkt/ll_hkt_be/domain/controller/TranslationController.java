@@ -4,6 +4,7 @@ import likelion_hkt.ll_hkt_be.domain.controller.request.TranslationRequest;
 import likelion_hkt.ll_hkt_be.domain.controller.response.TranslationResponse;
 import likelion_hkt.ll_hkt_be.domain.service.ExcelReadService;
 import likelion_hkt.ll_hkt_be.domain.service.ParticleAnalyzeService;
+import likelion_hkt.ll_hkt_be.domain.service.SearchedWordService;
 import likelion_hkt.ll_hkt_be.domain.service.dto.InputStringDto;
 import likelion_hkt.ll_hkt_be.domain.service.dto.WordsDto;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
 public class TranslationController {
+
 
     private final ExcelReadService excelReadService;
     private final ParticleAnalyzeService particleAnalyzeService;
@@ -88,4 +91,5 @@ public class TranslationController {
                 .translatedWord(translatedSentence)
                 .build();
     }
+
 }
