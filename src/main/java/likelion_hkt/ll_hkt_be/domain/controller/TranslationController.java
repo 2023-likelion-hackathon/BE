@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-public class SearchResultController {
+public class TranslationController {
 
     private final ExcelReadService excelReadService;
     private final ParticleAnalyzeService particleAnalyzeService;

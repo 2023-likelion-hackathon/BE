@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class ParticleAnalyzeService {
     private static final Pattern PARTICLE_PATTERN = Pattern.compile("웃프(다|네|)"); // 조사
     private static final Map<Pattern, String> patternTranslations = new HashMap<>();
+    private static final Map<String, String> spacedWordsTranslations = new HashMap<>();
 
     static {
         // 조사 패턴
@@ -27,6 +28,15 @@ public class ParticleAnalyzeService {
         patternTranslations.put(Pattern.compile("(\\w*?)충(\\w*?)"), "$1 -충 $2");
         patternTranslations.put(Pattern.compile("(\\w*?)까(\\w*?)"), "$1 -까 $2");
         patternTranslations.put(Pattern.compile("(\\w*?)각(\\w*?)"), "$1 -각 $2");
+
+
+        spacedWordsTranslations.put("라떼는 말이야", "나 때는 말이야");
+        spacedWordsTranslations.put("무슨 129", "무슨 일이야");
+        spacedWordsTranslations.put("아무 말 대잔치", "아무말하기");
+        spacedWordsTranslations.put("의문의 1승", "의도하지 않은 이득");
+        spacedWordsTranslations.put("혈중 마라 농도", "마라 음식 섭취 빈도");
+        spacedWordsTranslations.put("서로서로 도와요!", "다 같이 해요!");
+        spacedWordsTranslations.put("누가 기침소리를 내었어", "누가 그랬어");
     }
 
     public String InitialSentenceAnalysis(String text) {
