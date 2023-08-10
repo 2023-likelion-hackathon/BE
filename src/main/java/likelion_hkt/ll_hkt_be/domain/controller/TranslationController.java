@@ -89,8 +89,10 @@ public class TranslationController {
                 .coinedWord(wordsDto.getCoinedWord())
                 .coinedWordMeaning(wordsDto.getCoinedWordMeaning())
                 .coinedWordUrl(wordsDto.getCoinedWord_url())
+                .coinedWordExample(wordsDto.getCoinedWordExample())
                 .subWord(wordsDto.getSubWord())
                 .subWordMeaning(wordsDto.getSubWordMeaning())
+                .subWordExample(wordsDto.getSubWordExample())
                 .translatedWord(translatedSentence)
                 .build();
     }

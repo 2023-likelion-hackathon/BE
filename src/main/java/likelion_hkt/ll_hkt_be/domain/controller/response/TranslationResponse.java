@@ -13,9 +13,11 @@ public class TranslationResponse {
     private String coinedWord;
     private String coinedWordMeaning;
     private String coinedWordUrl;
+    private String coinedWordExample;
 
     private String subWord;
     private String subWordMeaning;
+    private String subWordExample;
 
     private String translatedWord;
 

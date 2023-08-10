@@ -39,29 +39,30 @@ public class ExcelReadService {
             if(coined_sheet_row != null && coined_sheet_row.getCell(0).toString().equals(inputWord)) {
                 String coinedWord = CheckNullPointException(coined_sheet_row.getCell(0));
                 String coinedWordMeaning = CheckNullPointException(coined_sheet_row.getCell(1));
-
                 String coinedWordUrl = CheckNullPointException(coined_sheet_row.getCell(2));
+                String coinedWordExample = CheckNullPointException(coined_sheet_row.getCell(3));
 
                 String subWord = CheckNullPointException(sub_sheet_row.getCell(0));
                 String subWordMeaning = CheckNullPointException(sub_sheet_row.getCell(1));
+                String subWordExample = CheckNullPointException(sub_sheet_row.getCell(2));
+
 
 
                 WordsDto wordsDto = WordsDto.builder()
                         .coinedWord(coinedWord)
                         .coinedWordMeaning(coinedWordMeaning)
                         .coinedWord_url(coinedWordUrl)
+                        .coinedWordExample(coinedWordExample)
                         .subWord(subWord)
                         .subWordMeaning(subWordMeaning)
+                        .subWordExample(subWordExample)
                         .build();
                 return wordsDto;
             }
         }
         return  WordsDto.builder()
                 .coinedWord("")
-                .coinedWordMeaning("")
-                .coinedWord_url("")
                 .subWord("")
-                .subWordMeaning("")
                 .build();
     }
 
