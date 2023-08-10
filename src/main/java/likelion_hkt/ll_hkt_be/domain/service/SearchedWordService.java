@@ -24,7 +24,6 @@ public class SearchedWordService {
             SearchedWord searchedWord = SearchedWord.builder()
                     .coinedWord(wordsDto.getCoinedWord())
                     .subWord(wordsDto.getSubWord())
-                    .createdAt(LocalDateTime.now())
                     .build();
             searchedWordRepository.save(searchedWord);
         }catch(Exception e){
