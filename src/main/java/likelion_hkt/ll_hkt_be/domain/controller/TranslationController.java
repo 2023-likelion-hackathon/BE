@@ -23,6 +23,7 @@ public class TranslationController {
 
     private final ExcelReadService excelReadService;
     private final ParticleAnalyzeService particleAnalyzeService;
+    private final SearchedWordService searchedWordService;
     private static final Map<String, String> spacedWordsTranslations = new HashMap<>();
 
     static {
@@ -74,6 +75,8 @@ public class TranslationController {
         for (Map.Entry<String, String> entry : replacementPatterns.entrySet()) {
             translatedSentence = translatedSentence.replace(entry.getKey(), entry.getValue());
         }
+
+        searchedWordService.saveSearchedWord(lastFoundWordInfo);
 
         TranslationResponse data = getWordsResponse(lastFoundWordInfo, translatedSentence);
 
