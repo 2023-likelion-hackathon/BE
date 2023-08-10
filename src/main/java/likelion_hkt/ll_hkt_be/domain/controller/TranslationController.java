@@ -4,6 +4,7 @@ import likelion_hkt.ll_hkt_be.domain.controller.request.TranslationRequest;
 import likelion_hkt.ll_hkt_be.domain.controller.response.TranslationResponse;
 import likelion_hkt.ll_hkt_be.domain.service.ExcelReadService;
 import likelion_hkt.ll_hkt_be.domain.service.ParticleAnalyzeService;
+import likelion_hkt.ll_hkt_be.domain.service.SearchedWordService;
 import likelion_hkt.ll_hkt_be.domain.service.dto.InputStringDto;
 import likelion_hkt.ll_hkt_be.domain.service.dto.WordsDto;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
-public class SearchResultController {
+public class TranslationController {
     private final ExcelReadService excelReadService;
     private final ParticleAnalyzeService particleAnalyzeService;
-    private WordsDto wordInfo=new WordsDto();
+    private final SearchedWordService searchedWordService;
 
+    private WordsDto wordInfo = new WordsDto();
 
 
     @PostMapping("/translate")
@@ -36,11 +37,13 @@ public class SearchResultController {
             String splitWord = wordsInSentence[i];
             System.out.println(splitWord);
             wordInfo = excelReadService.readCoinedExcelData(splitWord);
-            if(wordInfo!=null){
-                wordsInSentence[i] = wordInfo.getSubWord();
-                break;
+            if(wordInfo.getSubWord().equals("")){
+                wordsInSentence[i] =splitWord;
             }
+            wordsInSentence[i] = (wordInfo.getSubWord().equals("")) ? splitWord : wordInfo.getSubWord();
         }
+
+        searchedWordService.saveSearchedWord(wordInfo);
 
         String translatedSentence = String.join(" ",wordsInSentence);
         TranslationResponse data = getWordsResponse(wordInfo,translatedSentence);

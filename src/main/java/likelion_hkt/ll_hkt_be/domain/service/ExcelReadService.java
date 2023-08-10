@@ -29,7 +29,7 @@ public class ExcelReadService {
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
         XSSFSheet coined_sheet = workbook.getSheetAt(0);// 엑셀파일에서 첫 번째 시트 선택
-        XSSFSheet sub_sheet = workbook.getSheetAt(1);// 엑셀파일에서 첫 번째 시트 선택
+        XSSFSheet sub_sheet = workbook.getSheetAt(1);// 엑셀파일에서 두 번째 시트 선택
         int rowNum = coined_sheet.getPhysicalNumberOfRows(); // data 개수
 
         for(int rowidx=0; rowidx<rowNum; rowidx++) {
