@@ -6,10 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 @Getter
-
-public class SaveSearchedWordException  extends RuntimeException {
-    private final HttpStatus status = HttpStatus.CONFLICT;
-    private final int errorCode = 2;
+public class NotExistCoinedWordException extends NullPointerException{
+    private final HttpStatus status = HttpStatus.NOT_FOUND;
+    private final int errorCode = 1;
     private final String errorMessage;
 }
-
