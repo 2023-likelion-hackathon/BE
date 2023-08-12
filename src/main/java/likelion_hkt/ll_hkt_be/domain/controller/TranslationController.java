@@ -7,6 +7,7 @@ import likelion_hkt.ll_hkt_be.domain.service.ParticleAnalyzeService;
 import likelion_hkt.ll_hkt_be.domain.service.SearchedWordService;
 import likelion_hkt.ll_hkt_be.domain.service.dto.InputStringDto;
 import likelion_hkt.ll_hkt_be.domain.service.dto.WordsDto;
+import likelion_hkt.ll_hkt_be.gloabal.exception.NotExistCoinedWordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,6 @@ public class TranslationController {
 
         for (int i = 0; i < wordsList.size(); i++) {
             String splitWord = wordsList.get(i);
-            System.out.println(splitWord);
             // 임시 패턴을 원래 패턴으로 복원
             for (Map.Entry<String, String> entry : replacementPatterns.entrySet()) {
                 splitWord = splitWord.replace(entry.getKey(), entry.getValue());
@@ -76,8 +76,13 @@ public class TranslationController {
             translatedSentence = translatedSentence.replace(entry.getKey(), entry.getValue());
         }
 
-        searchedWordService.saveSearchedWord(lastFoundWordInfo);
+        if(lastFoundWordInfo.getCoinedWord()!="") {
+            searchedWordService.saveSearchedWord(lastFoundWordInfo);
+        }
 
+        if(lastFoundWordInfo.getCoinedWordMeaning()==null){
+            throw new NotExistCoinedWordException("탐색 가능한 신조어 데이터가 없습니다.");
+        }
         TranslationResponse data = getWordsResponse(lastFoundWordInfo, translatedSentence);
 
         return ResponseEntity.ok(data);

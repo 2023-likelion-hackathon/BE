@@ -9,7 +9,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ErrorHandler {
 
     @ExceptionHandler(SaveSearchedWordException.class)
-    public ResponseEntity<ErrorMessage> studentIdDuplicatedException(SaveSearchedWordException e){
+    public ResponseEntity<ErrorMessage> saveSearchedWordException(SaveSearchedWordException e){
+        return ResponseEntity.status(e.getStatus())
+                .body(ErrorMessageFactory.from(e.getStatus(),e.getErrorCode(),e.getErrorMessage()));
+    }
+
+    @ExceptionHandler(NotExistCoinedWordException.class)
+    public ResponseEntity<ErrorMessage> notExistCoinedWordException(NotExistCoinedWordException e){
         return ResponseEntity.status(e.getStatus())
                 .body(ErrorMessageFactory.from(e.getStatus(),e.getErrorCode(),e.getErrorMessage()));
     }
