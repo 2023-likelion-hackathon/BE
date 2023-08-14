@@ -4,6 +4,7 @@ import likelion_hkt.ll_hkt_be.domain.controller.response.SearchedWordResponse;
 import likelion_hkt.ll_hkt_be.domain.etity.SearchedWord;
 import likelion_hkt.ll_hkt_be.domain.repository.SearchedWordRepository;
 import likelion_hkt.ll_hkt_be.domain.service.dto.WordsDto;
+import likelion_hkt.ll_hkt_be.gloabal.exception.DeleteSearchedWordException;
 import likelion_hkt.ll_hkt_be.gloabal.exception.SaveSearchedWordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,13 @@ public class SearchedWordService {
                 }
         );
         return searchedWordResponses;
+    }
+
+    public void deleteAllSearchedWords(){
+        try{
+            searchedWordRepository.deleteAll();
+        }catch (Exception e){
+            throw new DeleteSearchedWordException("검색 기록 삭제에 실패하였습니다.");
+        }
     }
 }
