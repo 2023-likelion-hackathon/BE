@@ -19,4 +19,12 @@ public class SearchedWordController {
         List<SearchedWordResponse> searchedWordResponses = searchedWordService.getSearchedWordList();
         return ResponseEntity.ok(searchedWordResponses);
     }
+
+
+    @GetMapping("/clearSearched")
+    private ResponseEntity<List<SearchedWordResponse>> getInitialWordList(){
+        searchedWordService.deleteAllSearchedWords();
+        List<SearchedWordResponse> searchedWordResponses = searchedWordService.getSearchedWordList();
+        return ResponseEntity.ok(searchedWordResponses);
+    }
 }
