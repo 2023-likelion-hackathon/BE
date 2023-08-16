@@ -9,6 +9,10 @@ import likelion_hkt.ll_hkt_be.domain.service.dto.InputStringDto;
 import likelion_hkt.ll_hkt_be.domain.service.dto.WordsDto;
 import likelion_hkt.ll_hkt_be.gloabal.exception.NotExistCoinedWordException;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Connector;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
